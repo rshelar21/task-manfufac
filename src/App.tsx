@@ -101,11 +101,11 @@ function App() {
           return {
             crop: key,
             yeildOfCrops: Number(
-              res.avgCropData[key].yeildOfCrops.toFixed(2) / res.productionData.length
-            ).toFixed(2),
+              res.avgCropData[key].yeildOfCrops.toFixed(3) / res.productionData.length
+            ).toFixed(3),
             areaofCultivation: Number(
-              res.avgCropData[key].areaofCultivation.toFixed(2) / res.productionData.length
-            ).toFixed(2),
+              res.avgCropData[key].areaofCultivation.toFixed(3) / res.productionData.length
+            ).toFixed(3),
           };
         });
         setCropProductionData(res?.productionData);
