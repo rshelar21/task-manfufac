@@ -22,20 +22,20 @@ function App() {
     let maxProdCropName = "";
     let minProdCropName = "";
     let year_value = Number(agricultureData[0]["Year"].split(", ")[1]);
-    let minProd = agricultureData[0]["Crop Production (UOM:t(Tonnes))"] || 0;
-    let maxProd = agricultureData[0]["Crop Production (UOM:t(Tonnes))"] || 0;
+    let minProd = agricultureData[0]["Crop Production (UOM:t(Tonnes))"];
+    let maxProd = agricultureData[0]["Crop Production (UOM:t(Tonnes))"];
     let avgCropData: any = {};
     const productionData = agricultureData
       ?.map((item, index) => {
         if (avgCropData[item["Crop Name"]]) {
           avgCropData[item["Crop Name"]] = {
             yeildOfCrops:
-            avgCropData[item["Crop Name"]]?.yeildOfCrops +
+              avgCropData[item["Crop Name"]]?.yeildOfCrops +
               Number(
                 item["Yield Of Crops (UOM:Kg/Ha(KilogramperHectare))"] || 0
               ),
             areaofCultivation:
-            avgCropData[item["Crop Name"]]?.areaofCultivation +
+              avgCropData[item["Crop Name"]]?.areaofCultivation +
               Number(item["Area Under Cultivation (UOM:Ha(Hectares))"] || 0),
           };
         } else {
@@ -49,7 +49,7 @@ function App() {
           };
         }
 
-        if (year_value >= Number(item.Year.split(", ")[1])) {
+        if (year_value === Number(item.Year.split(", ")[1])) {
           if (item["Crop Production (UOM:t(Tonnes))"]) {
             if (item["Crop Production (UOM:t(Tonnes))"] > maxProd) {
               maxProd = item["Crop Production (UOM:t(Tonnes))"];
@@ -58,9 +58,6 @@ function App() {
               minProd = item["Crop Production (UOM:t(Tonnes))"];
               minProdCropName = item["Crop Name"];
             }
-          } else {
-            minProd = item["Crop Production (UOM:t(Tonnes))"] || 0;
-            minProdCropName = item["Crop Name"];
           }
           objNew = {
             ...objNew,
@@ -86,6 +83,7 @@ function App() {
         }
       })
       .filter(Boolean);
+
     return {
       productionData,
       avgCropData,
@@ -96,15 +94,16 @@ function App() {
     if (agricultureData) {
       const res: any = handleGetCropDetails(agricultureData);
       if (res) {
-        console.log(res, 'res');
         const data = Object.keys(res?.avgCropData).map((key) => {
           return {
             crop: key,
             yeildOfCrops: Number(
-              res.avgCropData[key].yeildOfCrops.toFixed(3) / res.productionData.length
+              res.avgCropData[key].yeildOfCrops.toFixed(3) /
+                res.productionData.length
             ).toFixed(3),
             areaofCultivation: Number(
-              res.avgCropData[key].areaofCultivation.toFixed(3) / res.productionData.length
+              res.avgCropData[key].areaofCultivation.toFixed(3) /
+                res.productionData.length
             ).toFixed(3),
           };
         });
